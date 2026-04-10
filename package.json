@@ -1,0 +1,57 @@
+{
+  "name": "turboquant-js",
+  "version": "0.1.0",
+  "description": "TypeScript implementation of Google's TurboQuant algorithm for near-optimal vector quantization",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "bench": "tsx benchmarks/bench.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "quantization",
+    "vector",
+    "compression",
+    "kv-cache",
+    "llm",
+    "nearest-neighbor",
+    "embedding",
+    "turboquant",
+    "johnson-lindenstrauss"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.4",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.4"
+  }
+}
