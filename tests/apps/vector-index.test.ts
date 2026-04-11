@@ -1,6 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { VectorIndex } from '../../src/apps/vector-index.js';
-import { normalize } from '../../src/math/vec.js';
 import { createPRNG } from '../../src/rng/xorshift128.js';
 
 function randomVector(d: number, rng: ReturnType<typeof createPRNG>): Float64Array {

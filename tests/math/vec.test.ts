@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { dot, norm, normalize, add, sub, scale, sign, clone } from '../../src/math/vec.js';
+import { describe, expect, it } from 'vitest';
+import { add, clone, dot, norm, normalize, scale, sign, sub } from '../../src/math/vec.js';
 
 describe('vec', () => {
   const a = new Float64Array([1, 2, 3]);

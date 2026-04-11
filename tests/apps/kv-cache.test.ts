@@ -1,7 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { KVCacheCompressor } from '../../src/apps/kv-cache.js';
 import { createPRNG } from '../../src/rng/xorshift128.js';
-import { normalize } from '../../src/math/vec.js';
 
 function randomVector(d: number, rng: ReturnType<typeof createPRNG>): Float64Array {
   const v = new Float64Array(d);
@@ -50,10 +49,7 @@ describe('KVCacheCompressor', () => {
   it('retrieveValues returns vectors of correct dimension', () => {
     const kv = new KVCacheCompressor({ keyDim, valueDim });
     const rng = createPRNG(4);
-    kv.append(
-      [randomVector(keyDim, rng)],
-      [randomVector(valueDim, rng)],
-    );
+    kv.append([randomVector(keyDim, rng)], [randomVector(valueDim, rng)]);
     const values = kv.retrieveValues([0]);
     expect(values.length).toBe(1);
     expect(values[0]!.length).toBe(valueDim);
@@ -80,8 +76,6 @@ describe('KVCacheCompressor', () => {
   it('throws when keys and values length mismatch', () => {
     const kv = new KVCacheCompressor({ keyDim, valueDim });
     const rng = createPRNG(7);
-    expect(() =>
-      kv.append([randomVector(keyDim, rng)], []),
-    ).toThrow();
+    expect(() => kv.append([randomVector(keyDim, rng)], [])).toThrow();
   });
 });

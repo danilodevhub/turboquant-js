@@ -1,4 +1,4 @@
-import { solveLloydMax, type LloydMaxOptions } from './lloyd-max.js';
+import { type LloydMaxOptions, solveLloydMax } from './lloyd-max.js';
 import type { Codebook } from './types.js';
 
 const cache = new Map<string, Codebook>();

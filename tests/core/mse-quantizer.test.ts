@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { TurboQuantMSE } from '../../src/core/mse-quantizer.js';
-import { norm, sub, normalize, dot } from '../../src/math/vec.js';
+import { dot, norm, normalize, sub } from '../../src/math/vec.js';
 import { createPRNG } from '../../src/rng/xorshift128.js';
 
 function randomUnitVector(d: number, rng: ReturnType<typeof createPRNG>): Float64Array {

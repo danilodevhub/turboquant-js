@@ -1,8 +1,8 @@
-import { dot, norm as vecNorm, sub, scale } from '../math/vec.js';
 import { packBits, unpackBits } from '../math/bit-pack.js';
+import { dot, sub, norm as vecNorm } from '../math/vec.js';
 import { TurboQuantMSE } from './mse-quantizer.js';
 import { QJL } from './qjl.js';
-import type { TurboQuantConfig, QuantizedProd } from './types.js';
+import type { QuantizedProd, TurboQuantConfig } from './types.js';
 
 /**
  * TurboQuant two-stage quantizer for unbiased inner product estimation.
@@ -80,7 +80,7 @@ export class TurboQuantProd {
     // QJL reconstruction: sqrt(pi/2)/d * gamma * S^T * signs
     // We approximate by adding the correction to xMse
     const signs = unpackBits(q.qjlBits, this.dimension);
-    const correction = this.qjl.innerProductCorrection(signs, q.residualNorm, xMse);
+    const _correction = this.qjl.innerProductCorrection(signs, q.residualNorm, xMse);
 
     // For full reconstruction, we'd need S^T * signs.
     // But dequantize is mainly for MSE use; inner products go through innerProduct().

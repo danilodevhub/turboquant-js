@@ -1,7 +1,6 @@
-import { TurboQuantProd } from '../core/prod-quantizer.js';
 import { TurboQuantMSE } from '../core/mse-quantizer.js';
-import { dot, normalize } from '../math/vec.js';
-import type { QuantizedProd, QuantizedMSE } from '../core/types.js';
+import { TurboQuantProd } from '../core/prod-quantizer.js';
+import type { QuantizedMSE, QuantizedProd } from '../core/types.js';
 
 export interface KVCacheCompressorOptions {
   /** Dimension of key vectors. */

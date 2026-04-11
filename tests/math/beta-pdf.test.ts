@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { betaPdf, gaussianApproxPdf, coordinatePdf } from '../../src/math/beta-pdf.js';
+import { describe, expect, it } from 'vitest';
+import { betaPdf, coordinatePdf, gaussianApproxPdf } from '../../src/math/beta-pdf.js';
 import { simpson } from '../../src/math/integration.js';
 
 describe('betaPdf', () => {

@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { createPRNG } from '../../src/rng/xorshift128.js';
+import { describe, expect, it } from 'vitest';
 import { gaussianArray } from '../../src/rng/gaussian.js';
+import { createPRNG } from '../../src/rng/xorshift128.js';
 
 describe('gaussian', () => {
   it('mean is approximately 0', () => {

@@ -1,7 +1,17 @@
-export { dot, norm, normalize, add, sub, scale, sign, clone } from './vec.js';
-export { type Mat, createMat, identity, matVec, matMul, transpose, getEl, setEl, fromColumns } from './mat.js';
-export { qr } from './qr.js';
+export { betaPdf, coordinatePdf, gaussianApproxPdf } from './beta-pdf.js';
+export { packBits, packIndices, unpackBits, unpackIndices } from './bit-pack.js';
 export { gamma, lnGamma } from './gamma.js';
-export { betaPdf, gaussianApproxPdf, coordinatePdf } from './beta-pdf.js';
-export { simpson, adaptiveSimpson } from './integration.js';
-export { packBits, unpackBits, packIndices, unpackIndices } from './bit-pack.js';
+export { adaptiveSimpson, simpson } from './integration.js';
+export {
+  createMat,
+  fromColumns,
+  getEl,
+  identity,
+  type Mat,
+  matMul,
+  matVec,
+  setEl,
+  transpose,
+} from './mat.js';
+export { qr } from './qr.js';
+export { add, clone, dot, norm, normalize, scale, sign, sub } from './vec.js';

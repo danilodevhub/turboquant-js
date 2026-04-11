@@ -1,7 +1,7 @@
-import { norm as vecNorm, scale } from '../math/vec.js';
-import { createRotation, type Rotation } from './rotation.js';
+import { scale, norm as vecNorm } from '../math/vec.js';
 import { getCodebook } from './codebook.js';
-import type { TurboQuantConfig, QuantizedMSE, Codebook } from './types.js';
+import { createRotation, type Rotation } from './rotation.js';
+import type { Codebook, QuantizedMSE, TurboQuantConfig } from './types.js';
 
 /**
  * TurboQuant Stage 1: MSE-optimal scalar quantizer.
@@ -73,11 +73,7 @@ export class TurboQuantMSE {
  * For small centroid counts (2-16), linear scan over boundaries is
  * faster than binary search due to branch prediction.
  */
-function findNearest(
-  value: number,
-  centroids: Float64Array,
-  boundaries: Float64Array,
-): number {
+function findNearest(value: number, centroids: Float64Array, boundaries: Float64Array): number {
   // Walk boundaries: value < boundary[i] means it belongs to centroid i
   for (let i = 0; i < boundaries.length; i++) {
     if (value < boundaries[i]!) return i;

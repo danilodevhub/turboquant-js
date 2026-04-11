@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { QJL } from '../../src/core/qjl.js';
-import { normalize, dot } from '../../src/math/vec.js';
+import { normalize } from '../../src/math/vec.js';
 import { createPRNG } from '../../src/rng/xorshift128.js';
 
 describe('QJL', () => {

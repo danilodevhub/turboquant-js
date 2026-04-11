@@ -1,5 +1,14 @@
-import { describe, it, expect } from 'vitest';
-import { createMat, identity, matVec, matMul, transpose, getEl, setEl, fromColumns } from '../../src/math/mat.js';
+import { describe, expect, it } from 'vitest';
+import {
+  createMat,
+  fromColumns,
+  getEl,
+  identity,
+  matMul,
+  matVec,
+  setEl,
+  transpose,
+} from '../../src/math/mat.js';
 
 describe('mat', () => {
   it('identity * vector = vector', () => {

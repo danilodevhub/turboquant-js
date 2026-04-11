@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createPRNG } from '../../src/rng/xorshift128.js';
 
 describe('xorshift128', () => {

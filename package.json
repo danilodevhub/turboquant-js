@@ -31,7 +31,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
     "bench": "tsx benchmarks/bench.ts",
+    "docs": "typedoc src/index.ts --out docs",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -45,12 +48,22 @@
     "turboquant",
     "johnson-lindenstrauss"
   ],
-  "author": "",
+  "author": "danilodevhub",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danilodevhub/turboquant-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/danilodevhub/turboquant-js/issues"
+  },
+  "homepage": "https://github.com/danilodevhub/turboquant-js#readme",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "^2.4.11",
     "@vitest/coverage-v8": "^4.1.4",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
+    "typedoc": "^0.28.18",
     "typescript": "^6.0.2",
     "vitest": "^4.1.4"
   }

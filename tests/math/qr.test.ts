@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createMat, getEl, identity, matMul, transpose } from '../../src/math/mat.js';
 import { qr } from '../../src/math/qr.js';
-import { createMat, matMul, transpose, getEl, identity } from '../../src/math/mat.js';
 
 function maxAbsDiff(a: Float64Array, b: Float64Array): number {
   let max = 0;
@@ -12,12 +12,7 @@ function maxAbsDiff(a: Float64Array, b: Float64Array): number {
 
 describe('qr', () => {
   it('Q^T * Q = I for 4x4', () => {
-    const data = new Float64Array([
-      2, -1, 0, 1,
-      1, 3, -2, 0,
-      0, 1, 4, -1,
-      -1, 0, 1, 2,
-    ]);
+    const data = new Float64Array([2, -1, 0, 1, 1, 3, -2, 0, 0, 1, 4, -1, -1, 0, 1, 2]);
     const m = createMat(4, 4, data);
     const { Q } = qr(m);
     const QtQ = matMul(transpose(Q), Q);
@@ -26,11 +21,7 @@ describe('qr', () => {
   });
 
   it('Q * R reconstructs original matrix', () => {
-    const data = new Float64Array([
-      1, 2, 3,
-      4, 5, 6,
-      7, 8, 10,
-    ]);
+    const data = new Float64Array([1, 2, 3, 4, 5, 6, 7, 8, 10]);
     const m = createMat(3, 3, data);
     const { Q, R } = qr(m);
     const reconstructed = matMul(Q, R);
@@ -38,11 +29,7 @@ describe('qr', () => {
   });
 
   it('R is upper triangular', () => {
-    const data = new Float64Array([
-      3, 1, 1,
-      1, 3, 1,
-      1, 1, 3,
-    ]);
+    const data = new Float64Array([3, 1, 1, 1, 3, 1, 1, 1, 3]);
     const m = createMat(3, 3, data);
     const { R } = qr(m);
     for (let i = 0; i < 3; i++) {
@@ -53,12 +40,7 @@ describe('qr', () => {
   });
 
   it('R has non-negative diagonal (sign correction)', () => {
-    const data = new Float64Array([
-      -2, 1, 0, 3,
-      4, -1, 2, 1,
-      0, 3, -1, 2,
-      1, 0, 4, -2,
-    ]);
+    const data = new Float64Array([-2, 1, 0, 3, 4, -1, 2, 1, 0, 3, -1, 2, 1, 0, 4, -2]);
     const m = createMat(4, 4, data);
     const { R } = qr(m);
     for (let i = 0; i < 4; i++) {

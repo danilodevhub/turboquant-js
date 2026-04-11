@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { packBits, unpackBits, packIndices, unpackIndices } from '../../src/math/bit-pack.js';
+import { describe, expect, it } from 'vitest';
+import { packBits, packIndices, unpackBits, unpackIndices } from '../../src/math/bit-pack.js';
 
 describe('packBits / unpackBits', () => {
   it('round-trip identity', () => {

@@ -1,4 +1,4 @@
-import { createMat, matVec, transpose, type Mat } from '../math/mat.js';
+import { createMat, type Mat, matVec, transpose } from '../math/mat.js';
 import { qr } from '../math/qr.js';
 import { createPRNG } from '../rng/xorshift128.js';
 

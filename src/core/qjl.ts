@@ -1,4 +1,4 @@
-import { createMat, matVec, type Mat } from '../math/mat.js';
+import { createMat, type Mat, matVec } from '../math/mat.js';
 import { createPRNG } from '../rng/xorshift128.js';
 
 /**
@@ -44,11 +44,7 @@ export class QJL {
    *
    * Returns: sqrt(pi/2) / d * residualNorm * sum_j(sign_j * (S*y)_j)
    */
-  innerProductCorrection(
-    qjlSigns: Int8Array,
-    residualNorm: number,
-    y: Float64Array,
-  ): number {
+  innerProductCorrection(qjlSigns: Int8Array, residualNorm: number, y: Float64Array): number {
     const sy = matVec(this.projMatrix, y);
     let dotProduct = 0;
     for (let i = 0; i < this.dimension; i++) {

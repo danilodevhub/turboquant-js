@@ -1,6 +1,6 @@
 import { TurboQuantProd } from '../core/prod-quantizer.js';
-import { normalize, dot, norm as vecNorm } from '../math/vec.js';
 import type { QuantizedProd } from '../core/types.js';
+import { normalize } from '../math/vec.js';
 
 export interface VectorIndexOptions {
   /** Vector dimension. */

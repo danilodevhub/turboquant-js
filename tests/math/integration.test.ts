@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { simpson, adaptiveSimpson } from '../../src/math/integration.js';
+import { describe, expect, it } from 'vitest';
+import { adaptiveSimpson, simpson } from '../../src/math/integration.js';
 
 describe('simpson', () => {
   it('integral of x^2 from 0 to 1 = 1/3', () => {

@@ -17,7 +17,7 @@ export function betaPdf(x: number, d: number): number {
  */
 export function gaussianApproxPdf(x: number, d: number): number {
   const variance = 1 / d;
-  return Math.exp(-0.5 * x * x / variance) / Math.sqrt(2 * Math.PI * variance);
+  return Math.exp((-0.5 * x * x) / variance) / Math.sqrt(2 * Math.PI * variance);
 }
 
 /**

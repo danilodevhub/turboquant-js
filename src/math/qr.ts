@@ -1,4 +1,4 @@
-import { type Mat, createMat, getEl, setEl } from './mat.js';
+import { createMat, getEl, type Mat, setEl } from './mat.js';
 
 /**
  * Householder QR decomposition.

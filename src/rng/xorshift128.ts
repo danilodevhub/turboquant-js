@@ -12,8 +12,8 @@ export function createPRNG(seed: number): PRNG {
   for (let i = 0; i < 4; i++) {
     s = (s + 0x9e3779b9) >>> 0;
     let z = s;
-    z = (Math.imul(z ^ (z >>> 16), 0x85ebca6b)) >>> 0;
-    z = (Math.imul(z ^ (z >>> 13), 0xc2b2ae35)) >>> 0;
+    z = Math.imul(z ^ (z >>> 16), 0x85ebca6b) >>> 0;
+    z = Math.imul(z ^ (z >>> 13), 0xc2b2ae35) >>> 0;
     z = (z ^ (z >>> 16)) >>> 0;
     state[i] = z;
   }
@@ -36,7 +36,7 @@ export function createPRNG(seed: number): PRNG {
 
     // result = s0 + s1 (64-bit addition via 32-bit halves)
     const resultLo = (s0Lo + s1Lo) >>> 0;
-    const carry = ((s0Lo >>> 1) + (s1Lo >>> 1) + ((s0Lo & s1Lo) & 1)) >>> 31;
+    const carry = ((s0Lo >>> 1) + (s1Lo >>> 1) + (s0Lo & s1Lo & 1)) >>> 31;
     const resultHi = (s0Hi + s1Hi + carry) >>> 0;
 
     // state[0..1] = s0
@@ -80,7 +80,7 @@ export function createPRNG(seed: number): PRNG {
       s = u * u + v * v;
     } while (s >= 1 || s === 0);
 
-    const mul = Math.sqrt(-2 * Math.log(s) / s);
+    const mul = Math.sqrt((-2 * Math.log(s)) / s);
     spare = v * mul;
     hasSpare = true;
     return u * mul;

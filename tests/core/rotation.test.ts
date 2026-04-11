@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createRotation } from '../../src/core/rotation.js';
-import { matMul, transpose, identity } from '../../src/math/mat.js';
-import { norm, sub } from '../../src/math/vec.js';
+import { identity, matMul, transpose } from '../../src/math/mat.js';
+import { norm } from '../../src/math/vec.js';
 
 function maxAbsDiff(a: Float64Array, b: Float64Array): number {
   let max = 0;

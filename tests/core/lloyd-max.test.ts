@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { solveLloydMax, computeDistortion } from '../../src/core/lloyd-max.js';
+import { describe, expect, it } from 'vitest';
+import { computeDistortion, solveLloydMax } from '../../src/core/lloyd-max.js';
 
 describe('lloyd-max', () => {
   it('produces correct number of centroids for 1-bit', () => {
