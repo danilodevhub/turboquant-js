@@ -16,6 +16,42 @@ TypeScript implementation of Google's [TurboQuant](https://arxiv.org/abs/2504.19
 - **Universal runtime** — works in Node.js and browsers, zero runtime dependencies
 - **Two application APIs** — `VectorIndex` for nearest-neighbor search, `KVCacheCompressor` for LLM KV cache compression
 
+## Use Cases
+
+### Client-Side Search & Privacy
+
+- **Semantic search in browser extensions** — Index bookmarks, history, or notes with embeddings and search them locally. Data never leaves the device.
+- **Offline-capable RAG** — Build retrieval-augmented generation apps that work entirely client-side with a local LLM (WebLLM, Transformers.js).
+- **In-browser document search** — Upload and search PDFs or docs by meaning, not just keywords. See the [live demo](https://danilodevhub.github.io/turboquant-js-examples/).
+- **E-commerce product discovery** — Embed product catalogs and let users search by natural language directly in the browser.
+
+### Edge & Serverless
+
+- **Cloudflare Workers / Vercel Edge Functions** — Pure JS runs where WASM can't. No binary dependencies, tiny bundle (~15 KB).
+- **IoT / embedded Node.js** — Vector search on resource-constrained devices that can't afford full float64 storage.
+
+### LLM Infrastructure
+
+- **KV cache compression** — The `KVCacheCompressor` API compresses attention keys and values for in-browser LLM inference. Unbiased attention scores preserve model quality while cutting memory by 20x.
+- **Agent memory** — AI agents that accumulate context over time can compress past embeddings to stay within memory limits.
+
+### Developer Tools
+
+- **Rapid prototyping** — Zero config, `npm install`, 3 lines of code. No Docker, no WASM compilation, no training data.
+- **Testing & CI** — Deterministic vector search (seeded PRNG) for reproducible test suites without spinning up a vector database.
+
+## Why turboquant-js?
+
+| | turboquant-js | FAISS-WASM | Pinecone / Qdrant |
+|---|---|---|---|
+| Runtime | Pure TypeScript | WASM binary | Server-side |
+| Setup | `npm install` | Complex build | API key + infra |
+| Training required | None | PQ needs training data | N/A |
+| Unbiased scores | Yes (provably) | No | N/A |
+| Bundle size | ~15 KB | ~2 MB | N/A |
+| Serialization | Built-in `toBuffer` / `fromBuffer` | Custom | Managed |
+| Privacy | All data stays client-side | Client-side | Data sent to server |
+
 ## Installation
 
 ```bash
