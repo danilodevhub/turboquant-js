@@ -70,21 +70,15 @@ export class TurboQuantProd {
     };
   }
 
-  /** Dequantize (reconstruct) a vector. */
+  /**
+   * Dequantize (reconstruct) a vector using MSE-stage only.
+   *
+   * Note: this returns the Stage-1 (MSE) reconstruction without the QJL
+   * correction. For unbiased inner product estimation, use `innerProduct()`
+   * instead — it applies the full two-stage correction.
+   */
   dequantize(q: QuantizedProd): Float64Array {
-    // MSE reconstruction
-    const xMse = this.mse.dequantize({ indices: q.indices, norm: q.norm });
-
-    if (q.residualNorm < 1e-15) return xMse;
-
-    // QJL reconstruction: sqrt(pi/2)/d * gamma * S^T * signs
-    // We approximate by adding the correction to xMse
-    const signs = unpackBits(q.qjlBits, this.dimension);
-    const _correction = this.qjl.innerProductCorrection(signs, q.residualNorm, xMse);
-
-    // For full reconstruction, we'd need S^T * signs.
-    // But dequantize is mainly for MSE use; inner products go through innerProduct().
-    return xMse;
+    return this.mse.dequantize({ indices: q.indices, norm: q.norm });
   }
 
   /**

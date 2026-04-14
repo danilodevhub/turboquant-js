@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-04-14
+
+### Added
+
+- **Randomized Hadamard Transform (RHT)** — O(d log d) rotation replacing O(d^3) dense QR decomposition
+- **Serialization** — `toBuffer()` / `fromBuffer()` on `VectorIndex` and `KVCacheCompressor` for compact binary persistence
+- **`actualBytes`** field in `memoryUsage` reporting real in-memory footprint
+- **THEORY.md** — detailed mapping of implementation to the TurboQuant paper with deviation notes
+- **Benchmarks** — `benchmarks/bench.ts` covering compression quality, recall@k, and performance timing
+- **Use Cases** section and comparison table in README
+- Improved test rigor: z-tests for unbiasedness, edge cases (d=4, metric:'ip'), bit-pack roundtrips (196 tests)
+
+### Changed
+
+- `Rotation` interface no longer exposes `matrix` property (internal detail)
+- `TurboQuantProd.dequantize()` documented as MSE-only reconstruction; removed dead QJL code path
+
+### Fixed
+
+- README "How It Works" now accurately describes the RHT rotation method
+
 ## [0.1.0] - 2026-04-10
 
 ### Added
