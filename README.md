@@ -47,7 +47,11 @@ const results = index.search(queryEmbedding, 10);
 
 // Check compression stats
 console.log(index.memoryUsage);
-// => { totalBits: 23200, bitsPerVector: 1184, compressionRatio: 20.8 }
+// => { totalBits: 23200, bitsPerVector: 1184, compressionRatio: 20.8, actualBytes: ... }
+
+// Serialize / deserialize
+const buf = index.toBuffer();
+const restored = VectorIndex.fromBuffer(buf, { dimension: 384 });
 ```
 
 ### KV Cache Compression
@@ -70,6 +74,10 @@ const scores = compressor.attentionScores(queryVector);
 
 // Retrieve (dequantize) values at specific positions
 const vals = compressor.retrieveValues([0, 3, 7]);
+
+// Serialize / deserialize
+const buf = compressor.toBuffer();
+const restored = KVCacheCompressor.fromBuffer(buf, { keyDim: 128, valueDim: 128 });
 ```
 
 ### Low-Level Quantizers
@@ -100,9 +108,13 @@ const estimate = prod.innerProduct(queryVector, compressed);
 | `search(query, k)` | Return top-k results as `{ id, score }[]` |
 | `remove(id)` | Remove a vector by id |
 | `size` | Number of stored vectors |
-| `memoryUsage` | Compression statistics |
+| `memoryUsage` | Compression statistics (includes `actualBytes`) |
+| `toBuffer()` | Serialize the index to a compact binary `ArrayBuffer` |
+| `VectorIndex.fromBuffer(buf, opts)` | Deserialize an index from a buffer |
 
 **Options:** `dimension`, `bits` (default 3), `seed` (default 42), `metric` (`'cosine'` | `'ip'`)
+
+**`memoryUsage` fields:** `totalBits`, `bitsPerVector`, `compressionRatio`, `actualBytes` (estimated in-memory byte footprint of stored entries).
 
 ### `KVCacheCompressor`
 
@@ -112,14 +124,18 @@ const estimate = prod.innerProduct(queryVector, compressed);
 | `attentionScores(query)` | Unbiased attention score estimates |
 | `retrieveValues(indices)` | Dequantize values at given positions |
 | `length` | Number of cached pairs |
-| `memoryUsage` | Compression statistics |
+| `memoryUsage` | Compression statistics (includes `actualBytes`) |
 | `clear()` | Remove all cached entries |
+| `toBuffer()` | Serialize the cache to a compact binary `ArrayBuffer` |
+| `KVCacheCompressor.fromBuffer(buf, opts)` | Deserialize a cache from a buffer |
 
 **Options:** `keyDim`, `valueDim`, `keyBits` (default 3), `valueBits` (default 2), `seed` (default 42)
 
+**`memoryUsage` fields:** `keyBitsPerVector`, `valueBitsPerVector`, `totalBytes`, `compressionRatio`, `actualBytes`.
+
 ### `TurboQuantMSE`
 
-MSE-optimal scalar quantizer. Randomly rotates input then applies per-coordinate quantization using an optimal codebook.
+MSE-optimal scalar quantizer. Randomly rotates input then applies per-coordinate quantization using an optimal codebook derived from the coordinate distribution.
 
 ### `TurboQuantProd`
 
@@ -127,9 +143,39 @@ Two-stage quantizer (MSE + QJL) for unbiased inner product estimation. Uses `(b-
 
 ## How It Works
 
-1. **Random rotation** — a structured orthogonal rotation (based on randomized Hadamard transforms) spreads vector energy uniformly across coordinates
-2. **Lloyd-Max quantization** — each coordinate is scalar-quantized using an optimal codebook for the resulting Beta distribution
-3. **QJL correction** (Prod quantizer only) — the quantization residual is sign-bit projected via a Johnson-Lindenstrauss sketch, enabling unbiased inner product estimation
+1. **Random rotation (Randomized Hadamard Transform)** — The input vector is rotated using 3 rounds of Walsh-Hadamard transforms combined with random sign flips (diagonal +/-1 matrices). The input is zero-padded to the next power of 2 before applying the transform, then truncated back to the original dimension. This runs in O(d log d) time and O(d) space, spreading vector energy uniformly across all coordinates so that per-coordinate scalar quantization is near-optimal.
+
+2. **Lloyd-Max quantization** — Each rotated coordinate is scalar-quantized using an optimal codebook computed via the Lloyd-Max algorithm. The coordinate distribution after rotating a unit vector in R^d follows a Beta distribution; for d >= 64 the implementation switches to a Gaussian N(0, 1/d) approximation for efficiency. Centroids and decision boundaries are iteratively refined using adaptive Simpson quadrature for the conditional expectation integrals.
+
+3. **QJL correction** (Prod quantizer only) — The quantization residual (x - x_hat) is projected through a dense d x d matrix with i.i.d. N(0,1) entries, then sign-bit quantized to 1 bit per coordinate. This Quantized Johnson-Lindenstrauss (QJL) sketch enables an unbiased correction term for inner product estimation. The correction formula is: sqrt(pi/2) / d * ||residual|| * signs^T * S * y. Note: the QJL projection matrix is O(d^2) in both storage and application time, which dominates the cost for large dimensions.
+
+## Benchmarks
+
+Results from `npm run bench` on random unit vectors:
+
+### Compression quality (MSE and inner product bias)
+
+| Dim | Bits | Avg MSE | IP Bias | Compression |
+|-----|------|---------|---------|-------------|
+| 64 | 2 | 5.5e-3 | ~0 | 25.6x |
+| 64 | 3 | 1.8e-3 | ~0 | 18.3x |
+| 64 | 4 | 5.2e-4 | ~0 | 14.2x |
+| 128 | 2 | 2.8e-3 | ~0 | 28.4x |
+| 128 | 3 | 9.1e-4 | ~0 | 19.7x |
+| 128 | 4 | 2.7e-4 | ~0 | 15.1x |
+| 384 | 2 | 1.2e-3 | ~0 | 30.7x |
+| 384 | 3 | 7.4e-4 | ~0 | 20.8x |
+| 384 | 4 | 6.0e-4 | ~0 | 15.7x |
+
+### Recall@10 (dim=384, 500 vectors)
+
+| Bits | Recall@10 |
+|------|-----------|
+| 2 | 36.5% |
+| 3 | 44.5% |
+| 4 | 50.5% |
+
+Note: recall improves significantly with more vectors. The 50-vector demo achieves ~90% recall at similar bit-widths.
 
 ## Development
 
@@ -140,6 +186,7 @@ npm test             # Run tests
 npm run test:watch   # Watch mode
 npm run test:coverage # Coverage report
 npm run build        # Build ESM + CJS output
+npm run bench        # Run benchmarks
 ```
 
 ## Contributing
