@@ -78,4 +78,44 @@ describe('KVCacheCompressor', () => {
     const rng = createPRNG(7);
     expect(() => kv.append([randomVector(keyDim, rng)], [])).toThrow();
   });
+
+  it('memoryUsage reports actualBytes', () => {
+    const kv = new KVCacheCompressor({ keyDim, valueDim });
+    const rng = createPRNG(10);
+    kv.append([randomVector(keyDim, rng)], [randomVector(valueDim, rng)]);
+    const usage = kv.memoryUsage;
+    expect(usage.actualBytes).toBeGreaterThan(0);
+  });
+
+  describe('toBuffer / fromBuffer', () => {
+    it('roundtrip preserves attention scores', () => {
+      const kv = new KVCacheCompressor({ keyDim, valueDim, seed: 42 });
+      const rng = createPRNG(100);
+      const n = 5;
+      const keys = Array.from({ length: n }, () => randomVector(keyDim, rng));
+      const values = Array.from({ length: n }, () => randomVector(valueDim, rng));
+      kv.append(keys, values);
+
+      const query = randomVector(keyDim, rng);
+      const originalScores = kv.attentionScores(query);
+
+      const buffer = kv.toBuffer();
+      const restored = KVCacheCompressor.fromBuffer(buffer, { keyDim, valueDim, seed: 42 });
+
+      expect(restored.length).toBe(n);
+      const restoredScores = restored.attentionScores(query);
+
+      expect(restoredScores.length).toBe(originalScores.length);
+      for (let i = 0; i < originalScores.length; i++) {
+        expect(restoredScores[i]).toBeCloseTo(originalScores[i]!, 10);
+      }
+    });
+
+    it('roundtrip with empty cache', () => {
+      const kv = new KVCacheCompressor({ keyDim, valueDim, seed: 42 });
+      const buffer = kv.toBuffer();
+      const restored = KVCacheCompressor.fromBuffer(buffer, { keyDim, valueDim, seed: 42 });
+      expect(restored.length).toBe(0);
+    });
+  });
 });

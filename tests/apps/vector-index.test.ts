@@ -100,4 +100,76 @@ describe('VectorIndex', () => {
     // Searching with v2 should score higher after replacing with v2
     expect(score2).toBeGreaterThan(score1);
   });
+
+  it('memoryUsage reports actualBytes', () => {
+    const index = new VectorIndex({ dimension: d, bits: 3 });
+    const rng = createPRNG(10);
+    index.add('a', randomVector(d, rng));
+    const usage = index.memoryUsage;
+    expect(usage.actualBytes).toBeGreaterThan(0);
+  });
+
+  describe('toBuffer / fromBuffer', () => {
+    it('roundtrip preserves search results', () => {
+      const index = new VectorIndex({ dimension: d, bits: 3, seed: 42 });
+      const rng = createPRNG(100);
+      const vectors: Float64Array[] = [];
+      for (let i = 0; i < 10; i++) {
+        const v = randomVector(d, rng);
+        vectors.push(v);
+        index.add(i, v);
+      }
+
+      const query = randomVector(d, rng);
+      const originalResults = index.search(query, 5);
+
+      const buffer = index.toBuffer();
+      const restored = VectorIndex.fromBuffer(buffer, { dimension: d, bits: 3, seed: 42 });
+
+      expect(restored.size).toBe(10);
+      const restoredResults = restored.search(query, 5);
+
+      expect(restoredResults.length).toBe(originalResults.length);
+      for (let i = 0; i < originalResults.length; i++) {
+        expect(restoredResults[i]!.id).toBe(originalResults[i]!.id);
+        expect(restoredResults[i]!.score).toBeCloseTo(originalResults[i]!.score, 10);
+      }
+    });
+
+    it('roundtrip with empty index', () => {
+      const index = new VectorIndex({ dimension: d, bits: 3, seed: 42 });
+      const buffer = index.toBuffer();
+      const restored = VectorIndex.fromBuffer(buffer, { dimension: d, bits: 3, seed: 42 });
+      expect(restored.size).toBe(0);
+    });
+
+    it('roundtrip with mixed string and number IDs', () => {
+      const index = new VectorIndex({ dimension: d, bits: 3, seed: 42 });
+      const rng = createPRNG(200);
+      index.add('hello', randomVector(d, rng));
+      index.add(42, randomVector(d, rng));
+      index.add('world', randomVector(d, rng));
+      index.add(0, randomVector(d, rng));
+
+      const buffer = index.toBuffer();
+      const restored = VectorIndex.fromBuffer(buffer, { dimension: d, bits: 3, seed: 42 });
+
+      expect(restored.size).toBe(4);
+      const query = randomVector(d, rng);
+      const originalResults = index.search(query, 4);
+      const restoredResults = restored.search(query, 4);
+
+      for (let i = 0; i < originalResults.length; i++) {
+        expect(restoredResults[i]!.id).toBe(originalResults[i]!.id);
+        expect(restoredResults[i]!.score).toBeCloseTo(originalResults[i]!.score, 10);
+      }
+    });
+
+    it('throws on invalid buffer (wrong magic)', () => {
+      const buffer = new ArrayBuffer(17);
+      const view = new DataView(buffer);
+      view.setUint32(0, 0xdeadbeef, false);
+      expect(() => VectorIndex.fromBuffer(buffer, { dimension: d })).toThrow('Invalid buffer');
+    });
+  });
 });
