@@ -172,4 +172,83 @@ describe('VectorIndex', () => {
       expect(() => VectorIndex.fromBuffer(buffer, { dimension: d })).toThrow('Invalid buffer');
     });
   });
+
+  describe('metric: ip mode', () => {
+    it('self-query returns itself as top-1 with ip metric', () => {
+      const index = new VectorIndex({ dimension: d, bits: 3, seed: 42, metric: 'ip' });
+      const rng = createPRNG(50);
+      const v = randomVector(d, rng);
+      index.add('a', v);
+      const results = index.search(v, 1);
+      expect(results.length).toBe(1);
+      expect(results[0]!.id).toBe('a');
+    });
+
+    it('returns results sorted by descending score with ip metric', () => {
+      const index = new VectorIndex({ dimension: d, bits: 3, seed: 42, metric: 'ip' });
+      const rng = createPRNG(51);
+      for (let i = 0; i < 10; i++) {
+        index.add(i, randomVector(d, rng));
+      }
+      const query = randomVector(d, rng);
+      const results = index.search(query, 5);
+      for (let i = 1; i < results.length; i++) {
+        expect(results[i]!.score).toBeLessThanOrEqual(results[i - 1]!.score);
+      }
+    });
+
+    it('toBuffer / fromBuffer roundtrip preserves ip metric', () => {
+      const index = new VectorIndex({ dimension: d, bits: 3, seed: 42, metric: 'ip' });
+      const rng = createPRNG(52);
+      for (let i = 0; i < 5; i++) {
+        index.add(i, randomVector(d, rng));
+      }
+      const query = randomVector(d, rng);
+      const originalResults = index.search(query, 3);
+
+      const buffer = index.toBuffer();
+      const restored = VectorIndex.fromBuffer(buffer, { dimension: d, bits: 3, seed: 42, metric: 'ip' });
+
+      expect(restored.metric).toBe('ip');
+      const restoredResults = restored.search(query, 3);
+      for (let i = 0; i < originalResults.length; i++) {
+        expect(restoredResults[i]!.id).toBe(originalResults[i]!.id);
+        expect(restoredResults[i]!.score).toBeCloseTo(originalResults[i]!.score, 10);
+      }
+    });
+  });
+
+  describe('very small dimension (d=4)', () => {
+    it('self-query returns itself as top-1', () => {
+      const index = new VectorIndex({ dimension: 4, bits: 2, seed: 42 });
+      const rng = createPRNG(60);
+      const v = randomVector(4, rng);
+      index.add('a', v);
+      const results = index.search(v, 1);
+      expect(results.length).toBe(1);
+      expect(results[0]!.id).toBe('a');
+    });
+
+    it('add, remove, and search work correctly', () => {
+      const index = new VectorIndex({ dimension: 4, bits: 3, seed: 42 });
+      const rng = createPRNG(61);
+      index.add('x', randomVector(4, rng));
+      index.add('y', randomVector(4, rng));
+      index.add('z', randomVector(4, rng));
+      expect(index.size).toBe(3);
+      index.remove('y');
+      expect(index.size).toBe(2);
+      const results = index.search(randomVector(4, rng), 2);
+      expect(results.length).toBe(2);
+    });
+
+    it('memoryUsage reports reasonable values for d=4', () => {
+      const index = new VectorIndex({ dimension: 4, bits: 2, seed: 42 });
+      const rng = createPRNG(62);
+      index.add('a', randomVector(4, rng));
+      const usage = index.memoryUsage;
+      expect(usage.compressionRatio).toBeGreaterThan(1);
+      expect(usage.bitsPerVector).toBeLessThan(4 * 64);
+    });
+  });
 });

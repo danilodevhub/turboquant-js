@@ -93,4 +93,39 @@ describe('TurboQuantProd', () => {
     const xHat = tq.dequantize(q);
     expect(xHat.length).toBe(d);
   });
+
+  describe('z-test for unbiasedness', () => {
+    const nSamples = 1000;
+    const configs = [
+      { dim: 16, bits: 2 },
+      { dim: 16, bits: 4 },
+      { dim: 64, bits: 2 },
+      { dim: 64, bits: 4 },
+    ];
+
+    for (const { dim, bits: b } of configs) {
+      it(`dim=${dim}, bits=${b}: z-statistic for inner product bias is within [-3.5, 3.5]`, () => {
+        const tq = new TurboQuantProd({ dimension: dim, bits: b, seed: 42 });
+        const rng = createPRNG(7777);
+        const errors: number[] = [];
+
+        for (let i = 0; i < nSamples; i++) {
+          const x = randomUnitVector(dim, rng);
+          const y = randomUnitVector(dim, rng);
+          const q = tq.quantize(x);
+          const estimated = tq.innerProduct(y, q);
+          const exact = dot(y, x);
+          errors.push(estimated - exact);
+        }
+
+        const meanError = errors.reduce((a, b) => a + b, 0) / nSamples;
+        const variance =
+          errors.reduce((a, e) => a + (e - meanError) ** 2, 0) / (nSamples - 1);
+        const stdDev = Math.sqrt(variance);
+        const z = meanError / (stdDev / Math.sqrt(nSamples));
+
+        expect(Math.abs(z)).toBeLessThan(3.5);
+      });
+    }
+  });
 });
