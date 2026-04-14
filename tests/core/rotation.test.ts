@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { createRotation } from '../../src/core/rotation.js';
-import { identity, matMul, transpose } from '../../src/math/mat.js';
 import { norm } from '../../src/math/vec.js';
 
 function maxAbsDiff(a: Float64Array, b: Float64Array): number {
@@ -27,15 +26,6 @@ describe('rotation', () => {
     expect(norm(y)).toBeCloseTo(norm(x), 10);
   });
 
-  it('rotation matrix is orthogonal', () => {
-    const d = 16;
-    const rot = createRotation(d, 99);
-    const Q = rot.matrix;
-    const QtQ = matMul(transpose(Q), Q);
-    const I = identity(d);
-    expect(maxAbsDiff(QtQ.data, I.data)).toBeLessThan(1e-9);
-  });
-
   it('deterministic: same seed gives same rotation', () => {
     const rot1 = createRotation(8, 42);
     const rot2 = createRotation(8, 42);
@@ -43,6 +33,16 @@ describe('rotation', () => {
     const y1 = rot1.rotate(x);
     const y2 = rot2.rotate(x);
     expect(maxAbsDiff(y1, y2)).toBe(0);
+  });
+
+  it('different seeds produce different results', () => {
+    const rot1 = createRotation(16, 42);
+    const rot2 = createRotation(16, 99);
+    const x = new Float64Array(16);
+    for (let i = 0; i < 16; i++) x[i] = Math.sin(i + 1);
+    const y1 = rot1.rotate(x);
+    const y2 = rot2.rotate(x);
+    expect(maxAbsDiff(y1, y2)).toBeGreaterThan(0.01);
   });
 
   it('coordinate variance after rotation is ~1/d for unit vector', () => {
@@ -57,5 +57,28 @@ describe('rotation', () => {
     for (let i = 0; i < d; i++) sumSq += y[i]! * y[i]!;
     const variance = sumSq / d;
     expect(variance).toBeCloseTo(1 / d, 1);
+  });
+
+  it('rotated coordinates are approximately uniformly spread', () => {
+    // For a unit vector, after RHT the energy should be spread across coordinates
+    const d = 128;
+    const rot = createRotation(d, 77);
+    const x = new Float64Array(d);
+    x[0] = 1;
+    const y = rot.rotate(x);
+
+    // Check that no single coordinate has too much energy
+    // For a well-spread rotation, max |y_i| should be O(sqrt(log(d)/d))
+    let maxAbs = 0;
+    for (let i = 0; i < d; i++) {
+      maxAbs = Math.max(maxAbs, Math.abs(y[i]!));
+    }
+    // With d=128, sqrt(log(128)/128) ~ 0.19, allow generous bound
+    expect(maxAbs).toBeLessThan(0.5);
+  });
+
+  it('exposes dimension property', () => {
+    const rot = createRotation(42, 1);
+    expect(rot.dimension).toBe(42);
   });
 });

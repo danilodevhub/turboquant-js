@@ -1,6 +1,7 @@
 export { betaPdf, coordinatePdf, gaussianApproxPdf } from './beta-pdf.js';
 export { packBits, packIndices, unpackBits, unpackIndices } from './bit-pack.js';
 export { gamma, lnGamma } from './gamma.js';
+export { fwht, nextPow2 } from './hadamard.js';
 export { adaptiveSimpson, simpson } from './integration.js';
 export {
   createMat,
