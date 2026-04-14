@@ -119,8 +119,7 @@ describe('TurboQuantProd', () => {
         }
 
         const meanError = errors.reduce((a, b) => a + b, 0) / nSamples;
-        const variance =
-          errors.reduce((a, e) => a + (e - meanError) ** 2, 0) / (nSamples - 1);
+        const variance = errors.reduce((a, e) => a + (e - meanError) ** 2, 0) / (nSamples - 1);
         const stdDev = Math.sqrt(variance);
         const z = meanError / (stdDev / Math.sqrt(nSamples));
 

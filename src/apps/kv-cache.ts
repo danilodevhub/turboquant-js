@@ -227,7 +227,9 @@ export class KVCacheCompressor {
     const magic = view.getUint32(offset, false);
     offset += 4;
     if (magic !== KV_CACHE_MAGIC) {
-      throw new Error(`Invalid buffer: expected magic 0x${KV_CACHE_MAGIC.toString(16)}, got 0x${magic.toString(16)}`);
+      throw new Error(
+        `Invalid buffer: expected magic 0x${KV_CACHE_MAGIC.toString(16)}, got 0x${magic.toString(16)}`,
+      );
     }
 
     const version = view.getUint16(offset, false);
@@ -283,7 +285,11 @@ export class KVCacheCompressor {
         offset += 8;
       }
 
-      const quantizedKey: QuantizedProd = { indices: keyIndices, qjlBits: keyQjlBits, residualNorm: keyResidualNorm };
+      const quantizedKey: QuantizedProd = {
+        indices: keyIndices,
+        qjlBits: keyQjlBits,
+        residualNorm: keyResidualNorm,
+      };
       if (keyNorm !== undefined) {
         quantizedKey.norm = keyNorm;
       }

@@ -10,7 +10,6 @@ export { TurboQuantProd } from './core/prod-quantizer.js';
 export { QJL } from './core/qjl.js';
 // Core utilities
 export { createRotation, type Rotation } from './core/rotation.js';
-export { fwht, nextPow2 } from './math/hadamard.js';
 // Types
 export type {
   Codebook,
@@ -18,6 +17,7 @@ export type {
   QuantizedProd,
   TurboQuantConfig,
 } from './core/types.js';
+export { fwht, nextPow2 } from './math/hadamard.js';
 export type { PRNG } from './rng/types.js';
 // RNG
 export { createPRNG } from './rng/xorshift128.js';

@@ -207,7 +207,12 @@ describe('VectorIndex', () => {
       const originalResults = index.search(query, 3);
 
       const buffer = index.toBuffer();
-      const restored = VectorIndex.fromBuffer(buffer, { dimension: d, bits: 3, seed: 42, metric: 'ip' });
+      const restored = VectorIndex.fromBuffer(buffer, {
+        dimension: d,
+        bits: 3,
+        seed: 42,
+        metric: 'ip',
+      });
 
       expect(restored.metric).toBe('ip');
       const restoredResults = restored.search(query, 3);

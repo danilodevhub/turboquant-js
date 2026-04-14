@@ -261,7 +261,9 @@ export class VectorIndex {
     const magic = view.getUint32(offset, false);
     offset += 4;
     if (magic !== VECTOR_INDEX_MAGIC) {
-      throw new Error(`Invalid buffer: expected magic 0x${VECTOR_INDEX_MAGIC.toString(16)}, got 0x${magic.toString(16)}`);
+      throw new Error(
+        `Invalid buffer: expected magic 0x${VECTOR_INDEX_MAGIC.toString(16)}, got 0x${magic.toString(16)}`,
+      );
     }
 
     const version = view.getUint16(offset, false);
