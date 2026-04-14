@@ -45,12 +45,12 @@ export function createRotation(d: number, seed: number): Rotation {
         // Apply diagonal sign flip D_r
         const s = signs[r]!;
         for (let i = 0; i < m; i++) {
-          buf[i] *= s[i]!;
+          buf[i]! *= s[i]!;
         }
         // Apply Walsh-Hadamard and normalize
         fwht(buf);
         for (let i = 0; i < m; i++) {
-          buf[i] *= invSqrtM;
+          buf[i]! *= invSqrtM;
         }
       }
 
@@ -68,12 +68,12 @@ export function createRotation(d: number, seed: number): Rotation {
         // Apply Hadamard (self-inverse up to scaling) and normalize
         fwht(buf);
         for (let i = 0; i < m; i++) {
-          buf[i] *= invSqrtM;
+          buf[i]! *= invSqrtM;
         }
         // Apply diagonal sign flip D_r (sign matrices are self-inverse)
         const s = signs[r]!;
         for (let i = 0; i < m; i++) {
-          buf[i] *= s[i]!;
+          buf[i]! *= s[i]!;
         }
       }
 
