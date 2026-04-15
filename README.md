@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./banner-light.svg" width="480" />
-    <source media="(prefers-color-scheme: light)" srcset="./banner-dark.svg" width="480" />
+    <source media="(prefers-color-scheme: dark)" srcset="./banner-dark.svg" width="480" />
+    <source media="(prefers-color-scheme: light)" srcset="./banner-light.svg" width="480" />
     <img alt="turboquant-js" src="./banner-dark.svg" width="480" />
   </picture>
 </p>
