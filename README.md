@@ -1,3 +1,11 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./logo-light.svg" width="120" />
+    <source media="(prefers-color-scheme: light)" srcset="./logo-dark.svg" width="120" />
+    <img alt="turboquant-js" src="./logo-dark.svg" width="120" />
+  </picture>
+</p>
+
 # turboquant-js
 
 [![CI](https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml/badge.svg)](https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml)
