@@ -1,14 +1,16 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./logo-light.svg" width="120" />
-    <source media="(prefers-color-scheme: light)" srcset="./logo-dark.svg" width="120" />
-    <img alt="turboquant-js" src="./logo-dark.svg" width="120" />
+    <source media="(prefers-color-scheme: dark)" srcset="./banner-light.svg" width="480" />
+    <source media="(prefers-color-scheme: light)" srcset="./banner-dark.svg" width="480" />
+    <img alt="turboquant-js" src="./banner-dark.svg" width="480" />
   </picture>
 </p>
 
-# turboquant-js
-
-[![CI](https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml/badge.svg)](https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml)
+<p align="center">
+  <a href="https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml"><img src="https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://www.npmjs.com/package/turboquant-js"><img src="https://img.shields.io/npm/v/turboquant-js" alt="npm version" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
+</p>
 [![npm version](https://img.shields.io/npm/v/turboquant-js)](https://www.npmjs.com/package/turboquant-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 120" width="620" height="120">
+  <!-- Logo mark -->
+
+  <!-- Scattered dots -->
+  <circle cx="14" cy="14" r="4" fill="white" opacity="0.35" />
+  <circle cx="35" cy="8"  r="4" fill="white" opacity="0.35" />
+  <circle cx="22" cy="35" r="4" fill="white" opacity="0.35" />
+  <circle cx="46" cy="24" r="4" fill="white" opacity="0.35" />
+  <circle cx="10" cy="50" r="4" fill="white" opacity="0.35" />
+  <circle cx="38" cy="53" r="4" fill="white" opacity="0.35" />
+  <circle cx="55" cy="12" r="4" fill="white" opacity="0.35" />
+  <circle cx="57" cy="44" r="4" fill="white" opacity="0.35" />
+  <circle cx="27" cy="68" r="4" fill="white" opacity="0.35" />
+
+  <!-- Converging lines -->
+  <line x1="14" y1="14" x2="68" y2="68" stroke="white" stroke-width="0.5" opacity="0.2" />
+  <line x1="35" y1="8"  x2="77" y2="68" stroke="white" stroke-width="0.5" opacity="0.2" />
+  <line x1="22" y1="35" x2="71" y2="76" stroke="white" stroke-width="0.5" opacity="0.2" />
+  <line x1="46" y1="24" x2="80" y2="72" stroke="white" stroke-width="0.5" opacity="0.2" />
+  <line x1="10" y1="50" x2="66" y2="80" stroke="white" stroke-width="0.5" opacity="0.2" />
+  <line x1="38" y1="53" x2="74" y2="80" stroke="white" stroke-width="0.5" opacity="0.2" />
+  <line x1="55" y1="12" x2="82" y2="68" stroke="white" stroke-width="0.5" opacity="0.2" />
+  <line x1="57" y1="44" x2="84" y2="74" stroke="white" stroke-width="0.5" opacity="0.2" />
+  <line x1="27" y1="68" x2="69" y2="82" stroke="white" stroke-width="0.5" opacity="0.2" />
+
+  <!-- Compressed 3x3 grid -->
+  <circle cx="68"  cy="68"  r="5" fill="white" />
+  <circle cx="80"  cy="68"  r="5" fill="white" />
+  <circle cx="92"  cy="68"  r="5" fill="white" />
+  <circle cx="68"  cy="80"  r="5" fill="white" />
+  <circle cx="80"  cy="80"  r="5" fill="#4cc9f0" />
+  <circle cx="92"  cy="80"  r="5" fill="white" />
+  <circle cx="68"  cy="92"  r="5" fill="white" />
+  <circle cx="80"  cy="92"  r="5" fill="white" />
+  <circle cx="92"  cy="92"  r="5" fill="white" />
+
+  <!-- Library name -->
+  <text x="120" y="80" dominant-baseline="central" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="700" font-size="48" fill="#e8e8e8" letter-spacing="-1">turboquant-js</text>
+</svg>
