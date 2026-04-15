@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 92" width="440" height="92">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 -4 440 96" width="440" height="96">
   <!-- Scattered dots -->
   <circle cx="12" cy="10" r="4" fill="#4361ee" opacity="0.3" />
   <circle cx="32" cy="6"  r="4" fill="#4361ee" opacity="0.3" />
@@ -32,6 +32,6 @@
   <circle cx="74" cy="76" r="5" fill="#4361ee" />
   <circle cx="86" cy="76" r="5" fill="#4361ee" />
 
-  <!-- Library name (vertically centered with grid center y=64) -->
+  <!-- Library name -->
   <text x="108" y="64" dominant-baseline="central" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="700" font-size="44" fill="#1a1a2e" letter-spacing="-1">turboquant-js</text>
 </svg>
