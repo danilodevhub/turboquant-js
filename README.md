@@ -6,11 +6,9 @@
   </picture>
 </p>
 
-<p align="center">
-  <a href="https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml"><img src="https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://www.npmjs.com/package/turboquant-js"><img src="https://img.shields.io/npm/v/turboquant-js" alt="npm version" /></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
-</p>
+<a href="https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml"><img src="https://github.com/danilodevhub/turboquant-js/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+<a href="https://www.npmjs.com/package/turboquant-js"><img src="https://img.shields.io/npm/v/turboquant-js" alt="npm version" /></a>
+<a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
 
 TypeScript implementation of Google's [TurboQuant](https://arxiv.org/abs/2504.19874) algorithm for near-optimal vector quantization.
 
