@@ -1,6 +1,6 @@
 {
   "name": "turboquant-js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TypeScript implementation of Google's TurboQuant algorithm for near-optimal vector quantization",
   "type": "module",
   "main": "./dist/index.cjs",
